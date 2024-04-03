@@ -1,5 +1,7 @@
 import flet as ft
-from profile import Profile
+from home_page import ProfilePage
+
+from localizer import localize
 
 
 class LandingPage(ft.View):
@@ -7,17 +9,6 @@ class LandingPage(ft.View):
         super().__init__(route="/landing", padding=60)
 
         self.page = page
-
-        # Define a button to route to profile
-        self.button = ft.Container(
-            border_radius=5,
-            expand=True,
-            bgcolor="#F4CE14",
-            content=ft.Text("Check Linkage", color="black", size=18),
-            padding=ft.padding.only(left=25, right=25, top=10, bottom=10),
-            alignment=ft.alignment.center,
-            on_click=None,
-        )
 
         # Define the list of controls for this view
         self.controls = [
@@ -30,7 +21,7 @@ class LandingPage(ft.View):
                             controls=[
                                 ft.Divider(height=120, color="transparent"),
                                 ft.OutlinedButton(
-                                    text="Go to profile",
+                                    text=localize("{{ go2profile }}"),
                                     on_click=lambda _: self.page.go("/profile")
                                     if self.page
                                     else None,
@@ -60,5 +51,11 @@ def main(page: ft.Page):
 
         page.update()
 
+    def view_pop(e: ft.ViewPopEvent) -> None:
+        page.views.pop()
+        top_view = page.views[-1]
+        page.go(top_view.route)
+
     page.on_route_change = router
+    page.on_view_pop = view_pop
     page.go("/landing")

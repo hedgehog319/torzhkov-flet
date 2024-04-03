@@ -1,6 +1,8 @@
 import flet as ft
 from flet_runtime.app import random_string
 
+from localizer import localize
+
 
 class ProfilePage(ft.View):
     def __init__(self, page: ft.Page):
@@ -8,22 +10,42 @@ class ProfilePage(ft.View):
 
         self.page = page
 
-        def rand_desc(_: ft.TapEvent):
-            description.value = random_string(100)
-            description.update()
-
         description = ft.TextField(
-            value="Some description",
-            label="Description",
+            value=localize("{{ profile_description }}"),
+            label=localize("{{ profile_description_label }}"),
             read_only=True,
         )
 
+        def rand_desc(_: ft.TapEvent) -> None:
+            description.value = random_string(100)
+            description.update()
+
+        def change_lang(event: ft.ControlEvent) -> None:
+            localize.set_locale(event.data)
+            self.controls[-1].update()
+            print("Update")
+
         self.controls = [
-            ft.SafeArea(
+            ft.Container(
                 expand=True,
                 content=ft.Column(
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                     controls=[
+                        ft.Row(
+                            controls=[
+                                ft.Divider(height=1, color="transparent"),
+                                ft.Dropdown(
+                                    icon="icons.LANGUAGE",
+                                    on_change=change_lang,
+                                    options=[
+                                        ft.dropdown.Option(locale)
+                                        for locale in localize._available_locales
+                                    ],
+                                    value=localize.locale,
+                                ),
+                            ],
+                            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                        ),
                         ft.Divider(height=20, color="transparent"),
                         ft.Container(
                             bgcolor="white10",
@@ -40,14 +62,15 @@ class ProfilePage(ft.View):
                             ),
                         ),
                         ft.Divider(height=10, color="transparent"),
-                        ft.Text("Hedgehog319", size=32),
+                        ft.Text(localize("Hedgehog319"), size=32),
                         ft.Divider(height=50, color="transparent"),
                         ft.Column(
                             spacing=20,
                             controls=[
                                 description,
                                 ft.OutlinedButton(
-                                    text="Random description", on_click=rand_desc
+                                    text=localize("{{ rnd_button }}"),
+                                    on_click=rand_desc,
                                 ),
                             ],
                         ),
