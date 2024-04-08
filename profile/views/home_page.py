@@ -5,11 +5,14 @@ from localizer import localize
 
 
 class ProfilePage(ft.View):
-    def __init__(self, page: ft.Page):
+    def __init__(self, page: ft.Page) -> None:
         super().__init__(route="/profile", padding=20)
 
         self.page = page
 
+        self.build()
+
+    def build(self) -> None:
         description = ft.TextField(
             value=localize("{{ profile_description }}"),
             label=localize("{{ profile_description_label }}"),
@@ -19,11 +22,6 @@ class ProfilePage(ft.View):
         def rand_desc(_: ft.TapEvent) -> None:
             description.value = random_string(100)
             description.update()
-
-        def change_lang(event: ft.ControlEvent) -> None:
-            localize.set_locale(event.data)
-            self.controls[-1].update()
-            print("Update")
 
         self.controls = [
             ft.Container(
@@ -36,7 +34,7 @@ class ProfilePage(ft.View):
                                 ft.Divider(height=1, color="transparent"),
                                 ft.Dropdown(
                                     icon="icons.LANGUAGE",
-                                    on_change=change_lang,
+                                    on_change=self.change_lang,
                                     options=[
                                         ft.dropdown.Option(locale)
                                         for locale in localize._available_locales
@@ -78,3 +76,8 @@ class ProfilePage(ft.View):
                 ),
             )
         ]
+
+    def change_lang(self, event: ft.ControlEvent) -> None:
+        localize.set_locale(event.data)
+        self.build()
+        self.update()
