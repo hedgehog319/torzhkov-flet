@@ -3,3 +3,7 @@ go2profile: Перейти в профиль
 profile_description: Какое-то описание
 profile_description_label: Описание
 rnd_button: Сгенерировать строку
+language: Язык
+theme: Тема
+dark: Тёмная
+light: Светлая
