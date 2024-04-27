@@ -3,3 +3,7 @@ go2profile: Go to profile
 profile_description: Some description
 profile_description_label: Description
 rnd_button: Random description
+language: Language
+theme: Theme
+dark: Dark
+light: Light

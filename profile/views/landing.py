@@ -4,8 +4,10 @@ from localizer import localize
 
 
 class LandingPage(ft.View):
-    def __init__(self):
+    def __init__(self, appbar: ft.AppBar):
         super().__init__(route="/landing", padding=60)
+
+        self.appbar = appbar
 
         # Define the list of controls for this view
         self.controls = [
@@ -15,6 +17,7 @@ class LandingPage(ft.View):
                     alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     controls=[
                         ft.Column(
+                            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                             controls=[
                                 ft.Divider(height=120, color="transparent"),
                                 ft.OutlinedButton(
@@ -24,7 +27,6 @@ class LandingPage(ft.View):
                                     else None,
                                 ),
                             ],
-                            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                         ),
                     ],
                 ),
