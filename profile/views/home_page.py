@@ -5,9 +5,10 @@ from localizer import localize
 
 
 class ProfilePage(ft.View):
-    def __init__(self, page: ft.Page) -> None:
+    def __init__(self, page: ft.Page, appbar: ft.AppBar) -> None:
         super().__init__(route="/profile", padding=20)
 
+        self.appbar = appbar
         self.page = page
 
         self.build()
@@ -29,21 +30,6 @@ class ProfilePage(ft.View):
                 content=ft.Column(
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                     controls=[
-                        ft.Row(
-                            controls=[
-                                ft.Divider(height=1, color="transparent"),
-                                ft.Dropdown(
-                                    icon="icons.LANGUAGE",
-                                    on_change=self.change_lang,
-                                    options=[
-                                        ft.dropdown.Option(locale)
-                                        for locale in localize._available_locales
-                                    ],
-                                    value=localize.locale,
-                                ),
-                            ],
-                            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                        ),
                         ft.Divider(height=20, color="transparent"),
                         ft.Container(
                             bgcolor="white10",
